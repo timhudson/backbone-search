@@ -1,0 +1,14 @@
+{
+  "name": "backbone-search",
+  "version": "0.0.1",
+  "description": "A backbone collection for handling search results",
+  "main": "backbone-search.js",
+  "directories": {
+    "example": "example"
+  },
+  "devDependencies": {
+    "express": "~3.1.0",
+    "Faker": "~0.5.6"
+  },
+  "license": "MIT"
+}

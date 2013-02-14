@@ -1,0 +1,88 @@
+<body>
+  <h1>Backbone-search</h1>
+  <input type="text" placeholder="Search by name">
+  <div class="results"></div>
+</body>
+
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://underscorejs.org/underscore.js"></script>
+<script src="http://backbonejs.org/backbone.js"></script>
+<script src="/backbone-search.js"></script>
+<script>
+
+  // Initialize the search collection
+  var search = new BackboneSearch({url: '/search?q='});
+
+  $(function() {
+
+    // Cache our elements
+    var $input = $('input[type="text"]'),
+        $results = $('.results');
+
+    $input.on('keyup', function() {
+      // Clear the results if search is empty
+      if ($input.val() === '') return $results.html('');
+
+      // Pass query to the search collection
+      search.query($input.val());
+    });
+
+    // Listen for the reset event
+    search.on('reset', function(collection) {
+
+      // Do something with the fresh search results
+      var html = '';
+
+      collection.each(function(model) {
+        html += '<p>'+model.get('name')+' <span>'+model.get('email')+'</span></p>'
+      });
+
+      if (!collection.models.length) html = '<p><i>No matches found</i></p>'
+
+      $results.html(html);
+    });
+  });
+</script>
+
+<style>
+  body {
+    width: 300px;
+    margin: 40px auto;
+    font-family: sans-serif;
+  }
+
+  input {
+    width: 100%;
+    border-radius: 20px;
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+
+  .results {
+    margin-right: -100px;
+  }
+
+  .results p {
+    color: #444;
+    cursor: pointer;
+  }
+
+  .results p:hover {
+    color: #000;
+    -webkit-transition: color 0.1s ease;
+  }
+
+  .results p span {
+    color: #009eff;
+    padding-left: 6px;
+    font-size: 0.8em;
+    opacity: 0;
+    -webkit-transition: opacity 0.1s ease;
+  }
+
+  .results p:hover span {
+    opacity: 1;
+  }
+</style>
